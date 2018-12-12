@@ -8,8 +8,13 @@ import RxSwift
 final class {{classname}}: JSONReactiveAPI {
 {{#operation}}
      {{#bodyParam}}
-     func {{operationId}}({{#allParams}}{{paramName}}: {{#isEnum}}{{#isContainer}}{{{dataType}}}{{/isContainer}}{{^isContainer}}{{{datatypeWithEnum}}}_{{operationId}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}?{{/required}}{{#hasMore}}, 
+     func {{operationId}}({{#allParams}}{{paramName}}: {{#isEnum}}{{#isContainer}}{{{dataType}}}{{/isContainer}}{{^isContainer}}{{{datatypeWithEnum}}}_{{operationId}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}? = nil{{defaultValueWithParam}}{{/required}}{{#hasMore}}, 
                 {{/hasMore}}{{/allParams}}) -> Single<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Void{{/returnType}}> {
+                {{#allParams}}
+                {{#collectionFormat}}
+                let {{paramName}} = {{paramName}}.toCSV()
+                {{/collectionFormat}}
+                {{/allParams}}
                 return postJsonBody(baseUrl.joinPath("{{{path}}}"),
                             request: body,
                             headers: [
@@ -21,8 +26,13 @@ final class {{classname}}: JSONReactiveAPI {
      {{/bodyParam}}
 
      {{^bodyParam}}
-    func {{operationId}}({{#allParams}}{{paramName}}: {{#isEnum}}{{#isContainer}}{{{dataType}}}{{/isContainer}}{{^isContainer}}{{{datatypeWithEnum}}}_{{operationId}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}?{{/required}}{{#hasMore}}, 
+    func {{operationId}}({{#allParams}}{{paramName}}: {{#isEnum}}{{#isContainer}}{{{dataType}}}{{/isContainer}}{{^isContainer}}{{{datatypeWithEnum}}}_{{operationId}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}? = nil{{/required}}{{#hasMore}}, 
             {{/hasMore}}{{/allParams}}) -> Single<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Void{{/returnType}}> {
+            {{#allParams}}
+            {{#collectionFormat}}
+            let {{paramName}} = {{paramName}}.toCSV()
+            {{/collectionFormat}}
+            {{/allParams}}
             return request(.{{httpMethod}}, baseUrl.joinPath("{{{path}}}"), parameters: [
                 {{#allParams}}
                 {{^isHeaderParam}} 
