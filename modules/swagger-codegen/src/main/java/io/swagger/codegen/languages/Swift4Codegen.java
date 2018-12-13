@@ -612,6 +612,11 @@ public class Swift4Codegen extends DefaultCodegen implements CodegenConfig {
     }
 
     @Override
+    public String transformPath(String path) {
+        return path.replace("{", "\\(").replace("}", ")");
+    }
+
+    @Override
     public String toEnumValue(String value, String datatype) {
         return String.valueOf(value);
     }

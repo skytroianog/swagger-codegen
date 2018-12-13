@@ -2029,6 +2029,10 @@ public class DefaultCodegen {
         return fromOperation(path, httpMethod, operation, definitions, null);
     }
 
+    public String transformPath(String path) {
+        return path;
+    }
+
     /**
      * Convert Swagger Operation object to Codegen Operation object
      *
@@ -2060,7 +2064,7 @@ public class DefaultCodegen {
             }
         }
         operationId = removeNonNameElementToCamelCase(operationId);
-        op.path = path;
+        op.path = transformPath(path);
         op.operationId = toOperationId(operationId);
         op.summary = escapeText(operation.getSummary());
         op.unescapedNotes = operation.getDescription();
