@@ -1,54 +1,41 @@
+// AUTO GENERATED FILE BY SWAGGER CODEGEN - DO NOT EDIT
 {{#operations}}
-
 import Foundation
 import RxSwift
-
 {{#description}}
 /** {{description}} */{{/description}}
 final class {{classname}}: JSONReactiveAPI {
 {{#operation}}
      {{#bodyParam}}
-     func {{operationId}}({{#allParams}}{{paramName}}: {{#isEnum}}{{#isContainer}}{{{dataType}}}{{/isContainer}}{{^isContainer}}{{{datatypeWithEnum}}}_{{operationId}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}? = nil{{defaultValueWithParam}}{{/required}}{{#hasMore}}, 
-                {{/hasMore}}{{/allParams}}) -> Single<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Void{{/returnType}}> {
-                {{#allParams}}
-                {{#collectionFormat}}
-                let {{paramName}} = {{paramName}}.toCSV()
-                {{/collectionFormat}}
-                {{/allParams}}
-                return postJsonBody(baseUrl.joinPath("{{{path}}}"),
-                            request: body,
-                            headers: [
-                            {{#headerParams}}
-                            {{> _param}}{{#hasMore}},{{/hasMore}}
-                            {{/headerParams}}
-                            ]) 
-        }
+     func {{operationId}}({{#allParams}}{{paramName}}: {{#isEnum}}{{#isContainer}}{{{dataType}}}{{/isContainer}}{{^isContainer}}{{{datatypeWithEnum}}}_{{operationId}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}? = nil{{/required}}{{#hasMore}}, 
+            {{/hasMore}}{{/allParams}}) -> Single<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Void{{/returnType}}> {
+            return postJsonBody(baseUrl.joinPath("{{{path}}}"),
+                request: {{#bodyParams}}{{paramName}}{{/bodyParams}},
+                headers: {{#hasHeaderParams}}[
+                    {{#headerParams}}
+                    {{> _param}}{{#hasMore}},{{/hasMore}}
+                    {{/headerParams}}
+                ].compactMapValues{ $0 }{{/hasHeaderParams}}{{^hasHeaderParams}}nil{{/hasHeaderParams}}) 
+    }
      {{/bodyParam}}
-
      {{^bodyParam}}
     func {{operationId}}({{#allParams}}{{paramName}}: {{#isEnum}}{{#isContainer}}{{{dataType}}}{{/isContainer}}{{^isContainer}}{{{datatypeWithEnum}}}_{{operationId}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}? = nil{{/required}}{{#hasMore}}, 
             {{/hasMore}}{{/allParams}}) -> Single<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Void{{/returnType}}> {
-            {{#allParams}}
-            {{#collectionFormat}}
-            let {{paramName}} = {{paramName}}.toCSV()
-            {{/collectionFormat}}
-            {{/allParams}}
-            return request(.{{httpMethod}}, baseUrl.joinPath("{{{path}}}"), parameters: [
-                {{#allParams}}
-                {{^isHeaderParam}} 
-                {{> _param}}{{#hasMore}}, {{/hasMore}}
-                {{/isHeaderParam}}
-                {{/allParams}}
-                ], headers: [
-                        {{#headerParams}}
+            return request(.{{httpMethod}}, baseUrl.joinPath("{{{path}}}"), 
+                parameters: [
+                    {{#allParams}}
+                    {{^isHeaderParam}}
+                    {{> _param}}{{#hasMore}}, {{/hasMore}}
+                    {{/isHeaderParam}}
+                    {{/allParams}}
+                ].compactMapValues{ $0 },
+                headers: {{#hasHeaderParams}}[
+                    {{#headerParams}}
                     {{> _param}}{{#hasMore}},{{/hasMore}}
                     {{/headerParams}}
-                    ])
-            }
+                ].compactMapValues{ $0 }{{/hasHeaderParams}}{{^hasHeaderParams}}nil{{/hasHeaderParams}})
+    }
      {{/bodyParam}}
 {{/operation}}
 }
 {{/operations}}
- {{#queryParams}}
-            {{> _param}}{{#hasMore}}, {{/hasMore}}
-            {{/queryParams}}
