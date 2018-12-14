@@ -40,6 +40,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 
 public class Swift4Codegen extends DefaultCodegen implements CodegenConfig {
+    public static final String CLASS_PREFIX = "classPrefix";
     public static final String PROJECT_NAME = "projectName";
     public static final String RESPONSE_AS = "responseAs";
     public static final String UNWRAP_REQUIRED = "unwrapRequired";
@@ -65,6 +66,7 @@ public class Swift4Codegen extends DefaultCodegen implements CodegenConfig {
     protected boolean objcCompatible = false;
     protected boolean lenientTypeCast = false;
     protected boolean swiftUseApiNamespace;
+    protected String classPrefix = "SWG";
     protected String[] responseAs = new String[0];
     protected String sourceFolder = "Classes" + File.separator + "Swaggers";
 
@@ -213,6 +215,8 @@ public class Swift4Codegen extends DefaultCodegen implements CodegenConfig {
 
         importMapping = new HashMap<>();
 
+        cliOptions.add(new CliOption(CLASS_PREFIX, "prefix for generated classes (convention: Abbreviation of pod name e.g. `HN` for `HackerNews`).`")
+                .defaultValue("SWG"));
         cliOptions.add(new CliOption(PROJECT_NAME, "Project name in Xcode"));
         cliOptions.add(new CliOption(RESPONSE_AS,
                                      "Optionally use libraries to manage response.  Currently "
@@ -252,6 +256,11 @@ public class Swift4Codegen extends DefaultCodegen implements CodegenConfig {
     @Override
     public void processOpts() {
         super.processOpts();
+
+        if (additionalProperties.containsKey(CLASS_PREFIX)) {
+            setClassPrefix((String) additionalProperties.get(CLASS_PREFIX));
+        }
+        additionalProperties.put(CLASS_PREFIX, classPrefix);
 
         // Setup project name
         if (additionalProperties.containsKey(PROJECT_NAME)) {
@@ -346,6 +355,10 @@ public class Swift4Codegen extends DefaultCodegen implements CodegenConfig {
 
     }
 
+    public void setClassPrefix(String classPrefix) {
+        this.classPrefix = classPrefix;
+    }
+
     @Override
     protected boolean isReservedWord(String word) {
         return word != null && reservedWords.contains(word); //don't lowercase as super does
@@ -417,9 +430,9 @@ public class Swift4Codegen extends DefaultCodegen implements CodegenConfig {
      * @return capitalized model name
      */
     @Override
-    public String toModelName(String name) {
+    public String toModelName(String babbz) {
         // FIXME parameter should not be assigned. Also declare it as "final"
-        name = sanitizeName(name);
+        String name = sanitizeName(babbz);
 
         if (!StringUtils.isEmpty(modelNameSuffix)) { // set model suffix
             name = name + "_" + modelNameSuffix;
@@ -432,10 +445,11 @@ public class Swift4Codegen extends DefaultCodegen implements CodegenConfig {
         // camelize the model name
         // phone_number => PhoneNumber
         name = camelize(name);
+        name = classPrefix + name;
 
         // model name cannot use reserved keyword, e.g. return
         if (isReservedWord(name)) {
-            String modelName = "Model" + name;
+            String modelName = name + "Model";
             LOGGER.warn(name + " (reserved word) cannot be used as model name. Renamed to "
                         + modelName);
             return modelName;
@@ -443,8 +457,8 @@ public class Swift4Codegen extends DefaultCodegen implements CodegenConfig {
 
         // model name starts with number
         if (name.matches("^\\d.*")) {
-            // e.g. 200Response => Model200Response (after camelize)
-            String modelName = "Model" + name;
+            // e.g. 200Response => _200Response (after camelize)
+            String modelName = "_" + name;
             LOGGER.warn(name
                         + " (model name starts with number) cannot be used as model name."
                         + " Renamed to " + modelName);
@@ -491,7 +505,7 @@ public class Swift4Codegen extends DefaultCodegen implements CodegenConfig {
         if (name.length() == 0) {
             return "DefaultAPI";
         }
-        return initialCaps(name) + "API";
+        return classPrefix + initialCaps(name) + "API";
     }
 
     @Override

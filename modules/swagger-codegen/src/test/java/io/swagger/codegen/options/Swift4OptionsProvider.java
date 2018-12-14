@@ -29,6 +29,8 @@ public class Swift4OptionsProvider implements OptionsProvider {
     public static final String POD_DOCUMENTATION_URL_VALUE = "podDocumentationURL";
     public static final String SWIFT_USE_API_NAMESPACE_VALUE = "swiftUseApiNamespace";
     public static final String ALLOW_UNICODE_IDENTIFIERS_VALUE = "false";
+    public static final String CLASS_PREFIX_VALUE = "SWG";
+
 
     @Override
     public String getLanguage() {
@@ -59,6 +61,7 @@ public class Swift4OptionsProvider implements OptionsProvider {
                 .put(Swift4Codegen.SWIFT_USE_API_NAMESPACE, SWIFT_USE_API_NAMESPACE_VALUE)
                 .put(CodegenConstants.HIDE_GENERATION_TIMESTAMP, "true")
                 .put(CodegenConstants.ALLOW_UNICODE_IDENTIFIERS, ALLOW_UNICODE_IDENTIFIERS_VALUE)
+                .put(Swift4Codegen.CLASS_PREFIX, CLASS_PREFIX_VALUE)
                 .build();
     }
 

@@ -31,7 +31,7 @@ public class Swift4ModelTest {
         final CodegenModel cm = codegen.fromModel("sample", model);
 
         Assert.assertEquals(cm.name, "sample");
-        Assert.assertEquals(cm.classname, "Sample");
+        Assert.assertEquals(cm.classname, "SWGSample");
         Assert.assertEquals(cm.description, "a sample model");
         Assert.assertEquals(cm.vars.size(), 7);
         Assert.assertEquals(cm.discriminator,"test");
