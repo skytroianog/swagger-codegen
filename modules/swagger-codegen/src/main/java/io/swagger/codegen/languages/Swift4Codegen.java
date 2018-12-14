@@ -617,6 +617,11 @@ public class Swift4Codegen extends DefaultCodegen implements CodegenConfig {
     }
 
     @Override
+    public String transformHttpMethod(String httpMethod) {
+        return httpMethod.toLowerCase();
+    }
+
+    @Override
     public String toEnumValue(String value, String datatype) {
         return String.valueOf(value);
     }

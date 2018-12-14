@@ -2033,6 +2033,10 @@ public class DefaultCodegen {
         return path;
     }
 
+    public String transformHttpMethod(String httpMethod) {
+        return httpMethod.toUpperCase();
+    }
+
     /**
      * Convert Swagger Operation object to Codegen Operation object
      *
@@ -2297,7 +2301,7 @@ public class DefaultCodegen {
         }
 
         op.bodyParam = bodyParam;
-        op.httpMethod = httpMethod.toUpperCase();
+        op.httpMethod = transformHttpMethod(httpMethod);
 
         // move "required" parameters in front of "optional" parameters
         if (sortParamsByRequiredFlag) {
