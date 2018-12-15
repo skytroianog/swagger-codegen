@@ -1,0 +1,5 @@
+#!/bin/bash
+./run-in-docker.sh mvn clean package
+mv modules/swagger-codegen-cli/target/swagger-codegen-cli.jar ../../ita-app-myskyapp-ios/swagger-codegen/swagger-codegen-cli-msa.jar
+cd ../../ita-app-myskyapp-ios/swagger-codegen
+./generate

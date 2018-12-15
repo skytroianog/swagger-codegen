@@ -1,6 +1,5 @@
 // AUTO GENERATED FILE  BY SWAGGER CODEGEN - DO NOT EDIT
 {{#operations}}
-
 import Foundation
 import RxSwift
 {{#description}}
@@ -11,7 +10,8 @@ final class {{classname}}: JSONReactiveAPI {
      func {{operationId}}({{#allParams}}{{paramName}}: {{#isEnum}}{{#isContainer}}{{{dataType}}}{{/isContainer}}{{^isContainer}}{{{datatypeWithEnum}}}_{{operationId}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}? = nil{{/required}}{{#hasMore}}, 
             {{/hasMore}}{{/allParams}}) -> Single<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Void{{/returnType}}> {
             return postJsonBody(baseUrl.joinPath("{{{path}}}"),
-                request: {{#bodyParams}}{{paramName}}{{/bodyParams}}{{^bodyParams}}nil{{/bodyParams}},
+                {{#returnType}}request{{#bodyParams}}{{paramName}}{{/bodyParams}}{{^bodyParams}}nil{{/bodyParams}},{{/returnType}}
+                {{^returnType}}parameters: {{#bodyParams}}{{paramName}}.dictionary{{/bodyParams}}{{^bodyParams}}nil{{/bodyParams}},{{/returnType}}
                 headers: {{#hasHeaderParams}}[
                     {{#headerParams}}
                     {{> _param}}{{#hasMore}},{{/hasMore}}
