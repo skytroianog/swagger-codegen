@@ -6,20 +6,7 @@ import RxSwift
 /** {{description}} */{{/description}}
 final class {{classname}}: JSONReactiveAPI {
 {{#operation}}
-     {{#bodyParam}}
-     func {{operationId}}({{#allParams}}{{paramName}}: {{#isEnum}}{{#isContainer}}{{{dataType}}}{{/isContainer}}{{^isContainer}}{{{datatypeWithEnum}}}_{{operationId}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}? = nil{{/required}}{{#hasMore}}, 
-        {{/hasMore}}{{/allParams}}) -> Single<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Void{{/returnType}}> {
-        return request(.{{httpMethod}}, baseUrl.joinPath("{{{path}}}"),
-            parameters: {{#bodyParams}}{{paramName}}.dictionary{{/bodyParams}}{{^bodyParams}}nil{{/bodyParams}},
-            headers: {{#hasHeaderParams}}[
-                {{#headerParams}}
-                {{> _param}}{{#hasMore}},{{/hasMore}}
-                {{/headerParams}}
-            ].compactMapValues{ $0 }{{/hasHeaderParams}}{{^hasHeaderParams}}nil{{/hasHeaderParams}}) 
-    }
-     {{/bodyParam}}
-     {{^bodyParam}}
-     
+
     func {{operationId}}({{#allParams}}{{paramName}}: {{#isEnum}}{{#isContainer}}{{{dataType}}}{{/isContainer}}{{^isContainer}}{{{datatypeWithEnum}}}_{{operationId}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}? = nil{{/required}}{{#hasMore}}, 
             {{/hasMore}}{{/allParams}}) -> Single<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Void{{/returnType}}> {
         return request(.{{httpMethod}}, baseUrl.joinPath("{{{path}}}"), 
@@ -29,17 +16,13 @@ final class {{classname}}: JSONReactiveAPI {
                 {{> _param}}{{#hasMore}}, {{/hasMore}}
                 {{/isHeaderParam}}
                 {{/allParams}}
-            ].compactMapValues{ $0 }{{/hasQueryParams}}{{^hasQueryParams}}nil{{/hasQueryParams}},
+            ].compactMapValues{ $0 }{{/hasQueryParams}}{{^hasQueryParams}}{{#bodyParams}}{{paramName}}.dictionary{{/bodyParams}}{{^bodyParams}}nil{{/bodyParams}}{{/hasQueryParams}},
             headers: {{#hasHeaderParams}}[
                 {{#headerParams}}
                 {{> _param}}{{#hasMore}},{{/hasMore}}
                 {{/headerParams}}
             ].compactMapValues{ $0 }{{/hasHeaderParams}}{{^hasHeaderParams}}nil{{/hasHeaderParams}})
     }
-     {{/bodyParam}}
 {{/operation}}
 }
 {{/operations}}
- {{#queryParams}}
-            {{> _param}}{{#hasMore}}, {{/hasMore}}
-            {{/queryParams}}
