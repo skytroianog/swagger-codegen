@@ -8,33 +8,33 @@ final class {{classname}}: JSONReactiveAPI {
 {{#operation}}
      {{#bodyParam}}
      func {{operationId}}({{#allParams}}{{paramName}}: {{#isEnum}}{{#isContainer}}{{{dataType}}}{{/isContainer}}{{^isContainer}}{{{datatypeWithEnum}}}_{{operationId}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}? = nil{{/required}}{{#hasMore}}, 
-            {{/hasMore}}{{/allParams}}) -> Single<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Void{{/returnType}}> {
-            return postJsonBody(baseUrl.joinPath("{{{path}}}"),
-                {{#returnType}}request: {{#bodyParams}}{{paramName}}{{/bodyParams}}{{^bodyParams}}nil{{/bodyParams}},{{/returnType}}
-                {{^returnType}}parameters: {{#bodyParams}}{{paramName}}.dictionary{{/bodyParams}}{{^bodyParams}}nil{{/bodyParams}},{{/returnType}}
-                headers: {{#hasHeaderParams}}[
-                    {{#headerParams}}
-                    {{> _param}}{{#hasMore}},{{/hasMore}}
-                    {{/headerParams}}
-                ].compactMapValues{ $0 }{{/hasHeaderParams}}{{^hasHeaderParams}}nil{{/hasHeaderParams}}) 
+        {{/hasMore}}{{/allParams}}) -> Single<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Void{{/returnType}}> {
+        return request(.{{httpMethod}}, baseUrl.joinPath("{{{path}}}"),
+            parameters: {{#bodyParams}}{{paramName}}.dictionary{{/bodyParams}}{{^bodyParams}}nil{{/bodyParams}},
+            headers: {{#hasHeaderParams}}[
+                {{#headerParams}}
+                {{> _param}}{{#hasMore}},{{/hasMore}}
+                {{/headerParams}}
+            ].compactMapValues{ $0 }{{/hasHeaderParams}}{{^hasHeaderParams}}nil{{/hasHeaderParams}}) 
     }
      {{/bodyParam}}
      {{^bodyParam}}
+     
     func {{operationId}}({{#allParams}}{{paramName}}: {{#isEnum}}{{#isContainer}}{{{dataType}}}{{/isContainer}}{{^isContainer}}{{{datatypeWithEnum}}}_{{operationId}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}? = nil{{/required}}{{#hasMore}}, 
             {{/hasMore}}{{/allParams}}) -> Single<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Void{{/returnType}}> {
-            return request(.{{httpMethod}}, baseUrl.joinPath("{{{path}}}"), 
-                parameters: {{#hasQueryParams}}[
-                    {{#allParams}}
-                    {{^isHeaderParam}}
-                    {{> _param}}{{#hasMore}}, {{/hasMore}}
-                    {{/isHeaderParam}}
-                    {{/allParams}}
-                ].compactMapValues{ $0 }{{/hasQueryParams}}{{^hasQueryParams}}nil{{/hasQueryParams}},
-                headers: {{#hasHeaderParams}}[
-                    {{#headerParams}}
-                    {{> _param}}{{#hasMore}},{{/hasMore}}
-                    {{/headerParams}}
-                ].compactMapValues{ $0 }{{/hasHeaderParams}}{{^hasHeaderParams}}nil{{/hasHeaderParams}})
+        return request(.{{httpMethod}}, baseUrl.joinPath("{{{path}}}"), 
+            parameters: {{#hasQueryParams}}[
+                {{#allParams}}
+                {{^isHeaderParam}}
+                {{> _param}}{{#hasMore}}, {{/hasMore}}
+                {{/isHeaderParam}}
+                {{/allParams}}
+            ].compactMapValues{ $0 }{{/hasQueryParams}}{{^hasQueryParams}}nil{{/hasQueryParams}},
+            headers: {{#hasHeaderParams}}[
+                {{#headerParams}}
+                {{> _param}}{{#hasMore}},{{/hasMore}}
+                {{/headerParams}}
+            ].compactMapValues{ $0 }{{/hasHeaderParams}}{{^hasHeaderParams}}nil{{/hasHeaderParams}})
     }
      {{/bodyParam}}
 {{/operation}}
